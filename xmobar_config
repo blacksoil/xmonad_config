@@ -1,0 +1,32 @@
+Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+        , borderColor = "black"
+        , border = TopB
+        , bgColor = "black"
+        , fgColor = "grey"
+        , position = TopW L 100
+        , commands = [ Run Weather "WIII" ["-t","<tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000
+                        , Run Network "wlan0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                        , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                        , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+						, Run BatteryP ["BAT0"] ["-t", "<acstatus>)",
+												 "-L", "10", "-H", "80", "-p", "3",
+												 "--",
+												 "-O", "<fc=green>Charging: <left>% <watts>W / <timeleft></fc>",
+												 "-o", "<fc=blue>Batt: <left>% <watts>W / <timeleft></fc>",
+												 "-i", "<fc=yellow>Batt: <left>% <watts>W / <timeleft></fc>",
+												 "-L", "-15", "-H", "-5",
+												 "-l", "red", "-m", "blue", "-h", "green",
+												 "-f", "/sys/class/power_supply/AC/online"] 10 
+                        , Run Memory ["-t","Mem: <usedratio>%"] 10
+                        , Run Swap [] 10
+                        , Run Com "uname" ["-s","-r"] "" 36000
+                        , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                        , Run StdinReader
+                        ]
+        , sepChar = "%"
+        , alignSep = "}{"
+        , template = "%StdinReader% | %cpu% | %memory% * %swap% | %wlan0% - %eth0% }{<fc=#ee9a00>%date%</fc> | %battery% | %WIII% "
+		, overrideRedirect = True
+		, allDesktops = True
+		, lowerOnStart = True 
+        }
